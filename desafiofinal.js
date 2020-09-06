@@ -9,7 +9,7 @@ var menu = readline.createInterface({
 mainMenu();
 
 function mainMenu() {
-    menu.question("1 - Cadastrar funcionário \n2 - Calcular impostos \n 3 - Imprimir contracheque \nEXIT - Sair\n", function (option) {
+    menu.question("1 - Cadastrar funcionário \n2 - Calcular impostos \n3 - Imprimir contracheque \nEXIT - Sair\n", function (option) {
         var opcao = option
         switch (opcao) {
             case "1":
@@ -31,12 +31,21 @@ function mainMenu() {
 
 var funcionarios = []
 
+
 function menuOptions() {
 
     menu.question("Digite o nome do funcionário \n", function (nome) {
         menu.question("Digite o salario do funcionário \n", function (salario) {
-            funcionarios.push({ "NOME": nome, "SALARIO": parseFloat(salario)})
-            console.log(funcionarios)
+            var payment = parseFloat(salario)
+            
+            if (payment <= 1045.00){
+                var inss = payment * (7.5/100)
+                var finalPayment = (payment - inss).toFixed(2)
+                funcionarios.push({ NOME: nome, BRUTO: payment.toFixed(2), LIQUIDO: finalPayment })
+                console.log(funcionarios)    
+            } else {
+                console.log("Maior")
+            }
             menu.question("Deseja adicionar outro funcionário? (S/N) \n", function (resp) {
                 var confirmation = resp
                 switch (confirmation) {
@@ -57,17 +66,6 @@ function menuOptions() {
 }
 
 
-function calculoINSS() {
-    menu.question("Digite o código do funcionário: \n", function (index){
-        var codigo = parseInt(index)
-        console.log(funcionarios[codigo])
-        if (salario <= 1045.00){
-            console.log("Salário Mínimo")
-        } else {
-            console.log("Maior")
-        }
-    
-    }
 
 
 function printPayCheck() {
@@ -77,4 +75,4 @@ function printPayCheck() {
         console.log(funcionarios[codigo])
 
     })
-}
+} 
